@@ -33,13 +33,13 @@ public class FileUploadRest {
     }
 
     @PostMapping("file-upload/upload")
-    public Result<String> uploadFiles(@RequestParam("file")MultipartFile file) throws IOException {
+    public Result<String> uploadFiles(@RequestParam("file") MultipartFile file) throws IOException {
         storageService.store(file);
         return Result.success();
     }
 
     @GetMapping("file-upload/{fileName:.+}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) throws IOException{
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) throws IOException {
         Resource file = storageService.loadAsResource(fileName);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")

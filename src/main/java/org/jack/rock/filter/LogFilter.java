@@ -28,12 +28,12 @@ public class LogFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest httpReq = (HttpServletRequest)servletRequest;
+        HttpServletRequest httpReq = (HttpServletRequest) servletRequest;
         String ipStr = getIPAddress(httpReq);
         String contentType = getContentType(httpReq);
-        String params = "{" + (String)httpReq.getParameterMap().entrySet().stream().map(
+        String params = "{" + (String) httpReq.getParameterMap().entrySet().stream().map(
                 (entry) -> {
-                    return (String)entry.getKey() + ":" + Arrays.toString((Object[])entry.getValue());
+                    return (String) entry.getKey() + ":" + Arrays.toString((Object[]) entry.getValue());
                 }
         ).collect(Collectors.joining(", ")) + "}";
 
@@ -72,7 +72,7 @@ public class LogFilter implements Filter {
 
     public static String getContentType(HttpServletRequest request) {
         String contentTypeHead = request.getHeader("content-type");
-        if(StringUtils.isEmpty(contentTypeHead)) {
+        if (StringUtils.isEmpty(contentTypeHead)) {
             return "null";
         }
         String contentType = contentTypeHead.split(";")[0].trim().toLowerCase();

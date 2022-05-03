@@ -26,15 +26,15 @@ public class UserRest extends CrudRest<UserEntity> {
 
     @PostMapping("/login")
     public Result<String> login(@Valid @RequestBody UserEntity reqUserEntity, BindingResult br, HttpSession httpSession) {
-        if(reqUserEntity.getName() == null || reqUserEntity.getPassWord() == null) {
+        if (reqUserEntity.getName() == null || reqUserEntity.getPassWord() == null) {
             return Result.badRequest();
         }
 
-        Optional<UserEntity> userEntityFound = ((UserRepository)repository).findByName(reqUserEntity.getName());
-        if(!userEntityFound.isPresent()) {
+        Optional<UserEntity> userEntityFound = ((UserRepository) repository).findByName(reqUserEntity.getName());
+        if (!userEntityFound.isPresent()) {
             return Result.error("用户名密码错误");
         }
-        if(userEntityFound.get().getPassWord().equals(reqUserEntity.getPassWord())) {
+        if (userEntityFound.get().getPassWord().equals(reqUserEntity.getPassWord())) {
             httpSession.setAttribute(httpSession.getId(), userEntityFound.get().getId());
             return Result.success();
         } else {

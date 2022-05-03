@@ -27,10 +27,10 @@ public abstract class CrudRest<T extends BaseEntity> {
 
     @PostMapping("/create")
     public Result<Long> create(@Valid @RequestBody T obj, BindingResult br) {
-        if(br.hasErrors()) {
+        if (br.hasErrors()) {
             return Result.badRequest();
         }
-        if(obj.getId() != null) {
+        if (obj.getId() != null) {
             return Result.error("新建对象不能有ID字段");
         }
 
@@ -41,12 +41,12 @@ public abstract class CrudRest<T extends BaseEntity> {
 
     @PostMapping("/update")
     public Result<String> update(@Valid @RequestBody T obj, BindingResult br) {
-        if(br.hasErrors()) {
+        if (br.hasErrors()) {
             return Result.badRequest();
         }
 
         Optional<T> objFound = repository.findById(obj.getId());
-        if(!objFound.isPresent()) {
+        if (!objFound.isPresent()) {
             return Result.error("对象不存在");
         }
 
@@ -58,7 +58,7 @@ public abstract class CrudRest<T extends BaseEntity> {
     @GetMapping("/get/{id}")
     public Result<T> get(@PathVariable("id") Long id) {
         Optional<T> objFound = repository.findById(id);
-        if(!objFound.isPresent()) {
+        if (!objFound.isPresent()) {
             return Result.error("对象不存在");
         } else {
             return Result.success(objFound.get());
@@ -67,7 +67,7 @@ public abstract class CrudRest<T extends BaseEntity> {
 
     @GetMapping("/list")
     public Result<Iterable<T>> list(@RequestParam(value = "ps", defaultValue = "10") Long ps,
-                                        @RequestParam(value = "pn", defaultValue = "0") Long pn
+                                    @RequestParam(value = "pn", defaultValue = "0") Long pn
     ) {
         Pageable pageable = PageRequest.of(pn.intValue(), ps.intValue(), Sort.Direction.ASC, "id");
         Page<T> objList = repository.findAll(pageable);
@@ -78,7 +78,7 @@ public abstract class CrudRest<T extends BaseEntity> {
     @PostMapping("/del/{id}")
     public Result<String> del(@PathVariable("id") Long id) {
         Optional<T> objFound = repository.findById(id);
-        if(!objFound.isPresent()) {
+        if (!objFound.isPresent()) {
             return Result.error("对象不存在");
         }
         repository.deleteById(id);

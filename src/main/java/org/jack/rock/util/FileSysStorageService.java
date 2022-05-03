@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
-public class FileSysStorageService implements StorageService{
+public class FileSysStorageService implements StorageService {
     private Path uploadPath;
 
     @Value("${sys.file-upload.path}")
@@ -37,14 +37,14 @@ public class FileSysStorageService implements StorageService{
     }
 
     @Override
-    public void store(MultipartFile file) throws IOException{
+    public void store(MultipartFile file) throws IOException {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
-        if(file.isEmpty()) {
+        if (file.isEmpty()) {
             log.warn("empty file found");
             return;
         }
-        if(fileName.contains("..")) {
+        if (fileName.contains("..")) {
             log.warn("file has relative path");
             return;
         }
@@ -71,11 +71,11 @@ public class FileSysStorageService implements StorageService{
     }
 
     @Override
-    public Resource loadAsResource(String filename) throws IOException{
+    public Resource loadAsResource(String filename) throws IOException {
         try {
             Path file = load(filename);
             Resource resource = new UrlResource(file.toUri());
-            if(resource.exists() ||resource.isReadable()) {
+            if (resource.exists() || resource.isReadable()) {
                 return resource;
             } else {
                 throw new Exception("faild when read file");

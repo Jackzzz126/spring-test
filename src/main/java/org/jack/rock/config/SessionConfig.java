@@ -26,11 +26,11 @@ public class SessionConfig implements WebMvcConfigurer {
     }
 
     @Configuration
-    public class SessionInterceptor implements HandlerInterceptor{
+    public class SessionInterceptor implements HandlerInterceptor {
         @Override
         public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
             HttpSession httpSession = request.getSession();
-            if(httpSession.getAttribute(httpSession.getId()) != null) {
+            if (httpSession.getAttribute(httpSession.getId()) != null) {
                 return true;
             }
             response.setContentType("application/json;charset=utf-8");
